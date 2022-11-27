@@ -24,7 +24,7 @@ services:
     volumes:
       - ${DB_LOCATION}:/var/lib/mysql
       - type: bind
-        source: ./certs
+        source: ${CERT_LOCATION}
         target: /etc/certs/
     ports:
       - 3306:3306
