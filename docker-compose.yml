@@ -6,7 +6,7 @@ services:
   db:
     image: mariadb:10.5
     restart: unless-stopped
-    # network_mode: ${NETWORK_MODE}
+    network_mode: ${NETWORK_MODE}
     command: 
       --innodb-buffer-pool-size=512M 
       --query-cache-size=64M 
@@ -32,7 +32,7 @@ services:
 
   adminer:
     image: adminer:4.8.1-standalone
-    # network_mode: ${NETWORK_MODE}
+    network_mode: ${NETWORK_MODE}
     restart: always
     ports:
       - 8080:8080
