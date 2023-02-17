@@ -6,7 +6,7 @@ services:
   db:
     image: mariadb:10.5
     restart: unless-stopped
-    network_mode: ${NETWORK_MODE}
+    # network_mode: ${NETWORK_MODE}
     command: 
       --innodb-buffer-pool-size=512M 
       --query-cache-size=64M 
@@ -31,10 +31,20 @@ services:
       - 3306:3306
 
   adminer:
-    image: adminer
-    network_mode: ${NETWORK_MODE}
+    image: adminer:4.8.1-standalone
+    # network_mode: ${NETWORK_MODE}
     restart: always
     ports:
       - 8080:8080
     depends_on:
       - db
+    environment:
+      DB_SSL_KEY: '/certs/client-key.pem'
+      DB_SSL_CERT: '/certs/client-cert.pem'
+      DB_SSL_CA: '/certs/root-ca.pem'
+      ADMINER_DEFAULT_SERVER: db
+    volumes:
+      - ./plugins/login-ssl.php:/var/www/html/plugins-enabled/login-ssl.php
+      - ${CERT_LOCATION}/client-key.pem:/certs/client-key.pem
+      - ${CERT_LOCATION}/client-cert.pem:/certs/client-cert.pem
+      - ${CERT_LOCATION}/root-ca.pem:/certs/root-ca.pem
